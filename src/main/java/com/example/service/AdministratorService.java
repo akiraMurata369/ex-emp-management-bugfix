@@ -40,4 +40,15 @@ public class AdministratorService {
 		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, password);
 		return administrator;
 	}
+
+	/**
+	 * メールアドレスから管理者情報を取得する.
+	 *
+	 * @param mailAddress メールアドレス
+	 * @return 管理者情報
+	 */
+	public Administrator findByMailAddress(String mailAddress) {
+		return administratorRepository.findByMailAddress(mailAddress);
+	}
+
 }
