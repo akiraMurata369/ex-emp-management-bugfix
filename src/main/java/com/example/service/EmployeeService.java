@@ -73,7 +73,8 @@ public class EmployeeService {
 		Pageable pageable = PageRequest.of(page, size);
 		return jpaEmployeeRepository.findAll(pageable);
   }
-  
+
+  	/**
 	 * 従業員情報を検索.
 	 *
 	 * @param name 名前
