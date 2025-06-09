@@ -3,6 +3,7 @@ package com.example.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,7 +85,14 @@ public class AdministratorController {
 			return "administrator/insert";
 		}
 
-		// 問題なければ登録処理
+		//メールアドレスの重複チェック
+		Administrator existingAdministrator = administratorService.findByMailAddress(form.getMailAddress());
+		if(existingAdministrator != null){
+			//既に存在するメールアドレスなら戻る
+			result.rejectValue("mailAddress", "duplicate", "このメールアドレスは既に登録されています");
+			return "administrator/insert";
+		}
+
 		Administrator administrator = new Administrator();
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
@@ -123,6 +131,10 @@ public class AdministratorController {
 			redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return "redirect:/";
 		}
+
+		// ログイン者名を保存
+		session.setAttribute("administratorName", administrator.getName());
+
 		return "redirect:/employee/showList";
 	}
 

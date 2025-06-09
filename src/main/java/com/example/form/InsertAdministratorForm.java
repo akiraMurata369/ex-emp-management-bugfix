@@ -17,7 +17,7 @@ public class InsertAdministratorForm {
 
 	/** メールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
-	@Size(max = 20, message = "20文字以内で入力してください")
+	@Size(max = 30, message = "30文字以内で入力してください")
 	private String mailAddress;
 
 	/** パスワード */
