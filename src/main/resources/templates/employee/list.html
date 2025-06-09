@@ -89,6 +89,24 @@
         </li>
       </ol>
 
+      <!-- 従業員検索フォーム -->
+      <form th:action="@{/employee/search}" class="form-inline" method="post">
+        <label for="employeeName" class="me-2">従業員名:</label>
+        <input
+          type="text"
+          name="employeeName"
+          id="employeeName"
+          class="form-control me-2"
+          placeholder="従業員名を入力"
+        />
+        <button type="submit" class="btn btn-primary">検索</button>
+      </form>
+      <br />
+      <!-- 検索結果が0だった時 -->
+      <div th:if="${emptyEmployeeMessage != null}">
+        <p th:text="${emptyEmployeeMessage}" class="alert alert-danger"></p>
+      </div>
+
       <!-- table -->
       <div class="row">
         <div
@@ -117,7 +135,9 @@
                   </a>
                 </td>
                 <td>
-                  <span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"></span>
+                  <span
+                    th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"
+                  ></span>
                 </td>
                 <td>
                   <span th:text="${employee.dependentsCount} + '人'">3人</span>
