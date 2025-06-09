@@ -67,7 +67,7 @@
               </li>
             </ul>
             <p class="navbar-text navbar-right">
-              <span th:text="${administratorName}">山田太郎</span
+              <span th:text="${session.administratorName}">山田太郎</span
               >さんこんにちは！ &nbsp;&nbsp;&nbsp;
               <a
                 href="../administrator/login.html"
@@ -132,7 +132,9 @@
                   <tr>
                     <th nowrap>入社日</th>
                     <td>
-                      <span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"></span>
+                      <span
+                        th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"
+                      ></span>
                     </td>
                   </tr>
                   <tr>
@@ -168,7 +170,10 @@
                   <tr>
                     <th nowrap>給料</th>
                     <td>
-                      <span th:text="${#numbers.formatInteger(employee.salary, 0, 'COMMA')} + '円'">400000円</span>
+                      <span
+                        th:text="${#numbers.formatInteger(employee.salary, 0, 'COMMA')} + '円'"
+                        >400000円</span
+                      >
                     </td>
                   </tr>
                   <tr>
