@@ -210,22 +210,28 @@
                     </td>
                   </tr>
                   <tr>
-                    <th nowrap>郵便番号</th>
+                    <th nowrap>郵便番号(ハイフンなし)</th>
                     <td>
-                      <label th:errors="*{zipCode}" class="error-messages">
-                      </label>
-                      <label
-                        class="control-label"
-                        style="color: red"
-                        for="zipCode"
-                      ></label>
-                      <input
-                        type="number"
-                        name="zipCode"
-                        id="zipCode"
-                        class="form-control"
-                        th:errorclass="error-input"
-                      />
+                      <div class="row">
+                        <div class="col-xs-7">
+                          <input
+                            type="number"
+                            name="zipCode"
+                            id="zipCode"
+                            class="form-control"
+                            th:errorclass="error-input"
+                          />
+                        </div>
+                        <div class="col-xs-5">
+                          <button
+                            id="get_address_btn"
+                            type="button"
+                            class="btn btn-default btn-block"
+                          >
+                            住所取得
+                          </button>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -339,8 +345,12 @@
         </div>
       </div>
     </div>
-    <!-- end container -->
+
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="../../static/js/bootstrap.min.js"></script>
+    <!-- Bootstrap（CDN使わずローカル読み込みなら th:src で） -->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!-- 郵便番号から住所取得スクリプト -->
+    <script th:src="@{/js/postCode.js}"></script>
   </body>
 </html>
