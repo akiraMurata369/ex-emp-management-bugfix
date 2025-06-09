@@ -8,10 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.Employee;
 import com.example.repository.EmployeeRepository;
+import org.springframework.ui.Model;
 
 /**
  * 従業員情報を操作するサービス.
- * 
+ *
  * @author igamasayuki
  *
  */
@@ -24,7 +25,7 @@ public class EmployeeService {
 
 	/**
 	 * 従業員情報を全件取得します.
-	 * 
+	 *
 	 * @return 従業員情報一覧
 	 */
 	public List<Employee> showList() {
@@ -34,7 +35,7 @@ public class EmployeeService {
 
 	/**
 	 * 従業員情報を取得します.
-	 * 
+	 *
 	 * @param id ID
 	 * @return 従業員情報
 	 * @throws org.springframework.dao.DataAccessException 検索されない場合は例外が発生します
@@ -46,10 +47,27 @@ public class EmployeeService {
 
 	/**
 	 * 従業員情報を更新します.
-	 * 
+	 *
 	 * @param employee 更新した従業員情報
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+
+
+	/**
+	 * 従業員情報を検索.
+	 *
+	 * @param name 名前
+	 * @param model モデル
+	 * @return 検索に一致した従業員のリスト
+	 */
+	public List<Employee> searchByLikeName(String name, Model model){
+		if(name == null) {
+			// 入力が空なら全件取得
+			return employeeRepository.findAll();
+		}
+		List<Employee> employeeList = employeeRepository.findByName(name);
+		return employeeList;
 	}
 }
