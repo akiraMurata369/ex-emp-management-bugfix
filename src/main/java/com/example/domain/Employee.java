@@ -1,5 +1,9 @@
 package com.example.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.util.Date;
 
 /**
@@ -8,8 +12,11 @@ import java.util.Date;
  * @author igamasayuki
  * 
  */
+@Entity
+@Table(name = "employees")
 public class Employee {
 	/** id */
+	@Id
 	private Integer id;
 	/** 従業員名 */
 	private String name;
