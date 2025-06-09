@@ -103,7 +103,14 @@ public class EmployeeController {
 	 */
 	@PostMapping("/search")
 	public String search(String employeeName, Model model) {
-		List<Employee> employeeList = employeeService.search(employeeName, model);
+		List<Employee> employeeList = employeeService.searchByLikeName(employeeName, model);
+
+		if (employeeList.isEmpty()) {
+			// 検索結果が0件なら全件取得
+			model.addAttribute("emptyEmployeeMessage", "検索条件がありません。全件表示します。");
+			employeeList = employeeService.showList();
+		}
+		
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}

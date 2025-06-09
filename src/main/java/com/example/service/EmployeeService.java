@@ -62,20 +62,12 @@ public class EmployeeService {
 	 * @param model モデル
 	 * @return 検索に一致した従業員のリスト
 	 */
-	public List<Employee> search(String name, Model model){
+	public List<Employee> searchByLikeName(String name, Model model){
 		if(name == null) {
 			// 入力が空なら全件取得
 			return employeeRepository.findAll();
 		}
-
 		List<Employee> employeeList = employeeRepository.findByName(name);
-
-		if (employeeList.isEmpty()) {
-			// 検索結果が0件なら全件取得
-			model.addAttribute("emptyEmployeeMessage", "検索条件がありません。全件表示します。");
-			employeeList = employeeRepository.findAll();
-		}
-
 		return employeeList;
 	}
 }
