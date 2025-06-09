@@ -2,7 +2,11 @@ package com.example.service;
 
 import java.util.List;
 
+import com.example.repository.JpaEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,9 @@ public class EmployeeService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
+
+	@Autowired
+	private JpaEmployeeRepository jpaEmployeeRepository;
 
 	/**
 	 * 従業員情報を全件取得します.
@@ -51,5 +58,18 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+
+
+	/**
+	 * 従業員情報をページングして取得.
+	 *
+	 * @param page	ページ番号
+	 * @param size	サイズ
+	 * @return ページングされた従業員情報
+	 */
+	public Page<Employee> getEmployeePage(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return jpaEmployeeRepository.findAll(pageable);
 	}
 }

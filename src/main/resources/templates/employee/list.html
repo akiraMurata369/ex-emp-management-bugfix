@@ -131,6 +131,19 @@
           <!-- ここから下を編集する必要はありません -->
         </div>
       </div>
+
+      <!-- ページネーション -->
+      <div>
+        <span th:if="${currentPage > 1}">
+          <a th:href="@{'/employee/showList'(page=${currentPage - 1})}">前へ</a>
+        </span>
+
+        <span>ページ [[${currentPage}]] / [[${totalPages}]]</span>
+
+        <span th:if="${currentPage < totalPages}">
+          <a th:href="@{'/employee/showList'(page=${currentPage + 1})}">次へ</a>
+        </span>
+      </div>
     </div>
     <!-- end container -->
 

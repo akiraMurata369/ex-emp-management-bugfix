@@ -3,14 +3,12 @@ package com.example.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
@@ -49,9 +47,15 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
-		model.addAttribute("employeeList", employeeList);
+	public String showList(@RequestParam(defaultValue = "1") int page, Model model) {
+		int pageSize = 10;
+		Page<Employee> employeePage = employeeService.getEmployeePage(page - 1, pageSize);
+
+		model.addAttribute("employeeList", employeePage.getContent());
+		model.addAttribute("employeePage", employeePage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", employeePage.getTotalPages());
+
 		return "employee/list";
 	}
 
