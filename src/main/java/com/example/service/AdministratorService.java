@@ -61,6 +61,15 @@ public class AdministratorService {
 	}
 
 	/**
+	 * メールアドレスが存在するかを確認.
+	 *
+	 * @param mailAddress メールアドレス
+	 * @return 存在する場合はtrue、存在しない場合はfalse
+	 */
+	public boolean isMailAddressExists(String mailAddress) {
+		return administratorRepository.findByMailAddress(mailAddress) != null;
+  }
+  
 	 * メールアドレスから管理者情報を取得する.
 	 *
 	 * @param mailAddress メールアドレス
