@@ -140,9 +140,11 @@
                   <tr>
                     <th nowrap>メールアドレス</th>
                     <td>
-                      <span th:text="${employee.mailAddress}"
-                        >yamada@sample.com</span
-                      >
+                      <a
+                        th:href="'https://mail.google.com/mail/?view=cm&fs=1&to=' + ${employee.mailAddress}"
+                        target="_blank"
+                        th:text="${employee.mailAddress}"
+                      ></a>
                     </td>
                   </tr>
                   <tr>
