@@ -1,7 +1,10 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.example.form.InsertEmployeeForm;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -117,5 +120,41 @@ public class EmployeeController {
 		
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
+	}
+
+
+	/**
+	 * 従業員登録画面を表示.
+	 *
+	 * @return 従業員登録画面
+	 */
+	@GetMapping("/toInsert")
+	public String toInsert(InsertEmployeeForm form){
+		return "employee/insert";
+	}
+
+	/**
+	 * 従業員を登録.
+	 *
+	 * @param form 従業員のフォーム
+	 * @param result バリデーション結果
+	 * @param model モデル
+	 * @return 従業員一覧画面
+	 * @throws IOException 画像ファイルの読み込みに失敗した場合
+	 */
+	@PostMapping("/insert")
+	public String insert(@Validated InsertEmployeeForm form, BindingResult result, Model model) throws IOException {
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(form, employee);
+
+		// imageフィールドにファイル名を設定
+		String fileName = form.getImage().getOriginalFilename();
+		employee.setImage(fileName);
+
+		if (result.hasErrors()) {
+			return "employee/insert";
+		}
+		employeeService.insert(employee, form.getImage());
+		return "redirect:/employee/showList";
 	}
 }

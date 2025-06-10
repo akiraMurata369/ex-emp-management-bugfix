@@ -1,5 +1,9 @@
 package com.example.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.example.repository.JpaEmployeeRepository;
@@ -13,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.domain.Employee;
 import com.example.repository.EmployeeRepository;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 従業員情報を操作するサービス.
@@ -88,5 +93,22 @@ public class EmployeeService {
 		}
 		List<Employee> employeeList = employeeRepository.findByName(name);
 		return employeeList;
+	}
+
+
+	/**
+	 * 従業員情報を登録.
+	 *
+	 * @param employee 登録する従業員情報
+	 */
+	public synchronized void insert(Employee employee, MultipartFile imageFile) throws IOException {
+		// 従業員idのmax値を取得
+		int maxId = employeeRepository.findMaxId();
+		employee.setId(maxId + 1);
+
+		// 画像データをstatic/imgに保存
+		Path uploadPath = Paths.get("src/main/resources/static/img/" + employee.getImage());
+		Files.copy(imageFile.getInputStream(), uploadPath);
+		employeeRepository.insert(employee);
 	}
 }
