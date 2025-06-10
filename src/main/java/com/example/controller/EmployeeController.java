@@ -3,10 +3,15 @@ package com.example.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.example.domain.Administrator;
 import com.example.form.InsertEmployeeForm;
+import com.example.service.AdministratorService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +35,12 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
+	@Autowired
+	private AdministratorService administratorService;
+
+	@Autowired
+	private HttpSession session;
+
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -51,6 +62,12 @@ public class EmployeeController {
 	 */
 	@GetMapping("/showList")
 	public String showList(@RequestParam(defaultValue = "1") int page, Model model) {
+		// 認証済みユーザー情報を取得
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String mailAddress = authentication.getName(); // ログインID（メールアドレス）
+		Administrator administrator = administratorService.findByMailAddress(mailAddress);
+		session.setAttribute("administratorName", administrator.getName());
+
 		// オートコンプリート候補を全部取得
 		List<Employee> employeeList = employeeService.showList();
 		model.addAttribute("employeeNameList", employeeList);
