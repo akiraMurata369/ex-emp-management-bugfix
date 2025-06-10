@@ -124,6 +124,18 @@ public class EmployeeController {
 
 
 	/**
+	 * 従業員名のオートコンプリート用に部分一致検索をする.
+	 *
+	 * @param term 検索文字列（クエリパラメータ）
+	 * @return 検索結果の従業員名リスト（JSON）
+	 */
+	@ResponseBody
+	@GetMapping("/autocomplete")
+	public List<String> autocomplete(@RequestParam String term) {
+		int limit = 10;
+		return employeeService.searchEmployeeNames(term);
+  }
+ /**
 	 * 従業員登録画面を表示.
 	 *
 	 * @return 従業員登録画面

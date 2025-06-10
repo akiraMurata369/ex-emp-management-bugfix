@@ -97,6 +97,16 @@ public class EmployeeService {
 
 
 	/**
+	 * 従業員名を部分一致で検索し、指定件数まで取得する（オートコンプリート用）
+	 *
+	 * @param name  検索文字列
+	 * @return 従業員名のリスト
+	 */
+	public List<String> searchEmployeeNames(String name) {
+		return employeeRepository.findNamesByName(name);
+  }
+  
+	/**
 	 * 従業員情報を登録.
 	 *
 	 * @param employee 登録する従業員情報
