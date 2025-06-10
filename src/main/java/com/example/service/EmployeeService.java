@@ -77,7 +77,7 @@ public class EmployeeService {
 	public Page<Employee> getEmployeePage(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		return jpaEmployeeRepository.findAll(pageable);
-  }
+  	}
 
   	/**
 	 * 従業員情報を検索.
@@ -87,10 +87,6 @@ public class EmployeeService {
 	 * @return 検索に一致した従業員のリスト
 	 */
 	public List<Employee> searchByLikeName(String name, Model model){
-		if(name == null) {
-			// 入力が空なら全件取得
-			return employeeRepository.findAll();
-		}
 		List<Employee> employeeList = employeeRepository.findByName(name);
 		return employeeList;
 	}

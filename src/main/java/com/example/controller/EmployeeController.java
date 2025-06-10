@@ -32,6 +32,8 @@ import com.example.service.EmployeeService;
 @RequestMapping("/employee")
 public class EmployeeController {
 
+	private static final int PAGE_SIZE = 10;
+
 	@Autowired
 	private EmployeeService employeeService;
 
@@ -72,17 +74,12 @@ public class EmployeeController {
 		List<Employee> employeeList = employeeService.showList();
 		model.addAttribute("employeeNameList", employeeList);
 
-
-		// ページング処理
-		int pageSize = 10;
-		Page<Employee> employeePage = employeeService.getEmployeePage(page - 1, pageSize);
-		model.addAttribute("employeeList", employeePage.getContent());
-		model.addAttribute("employeePage", employeePage);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", employeePage.getTotalPages());
+		// 従業員一覧をページングして取得
+		setEmployeePageToModel(page, model);
 
 		return "employee/list";
 	}
+
 
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する
@@ -132,12 +129,20 @@ public class EmployeeController {
 	 */
 	@PostMapping("/search")
 	public String search(String employeeName, Model model) {
+		// 検索条件が空なら全件取得
+		if(employeeName == null || employeeName.isEmpty()) {
+			setEmployeePageToModel(1, model);
+			return "employee/list";
+		}
+
 		List<Employee> employeeList = employeeService.searchByLikeName(employeeName, model);
 
+		// 検索結果が0件なら全件取得
 		if (employeeList.isEmpty()) {
-			// 検索結果が0件なら全件取得
 			model.addAttribute("emptyEmployeeMessage", "検索条件がありません。全件表示します。");
-			employeeList = employeeService.showList();
+			// 1ページ目を表示
+			setEmployeePageToModel(1, model);
+			return "employee/list";
 		}
 		
 		model.addAttribute("employeeList", employeeList);
@@ -178,5 +183,20 @@ public class EmployeeController {
 		}
 		employeeService.insert(employee, form.getImage());
 		return "redirect:/employee/showList";
+	}
+
+
+	/**
+	 * ページネーションを行い、従業員情報をモデルに設定.
+	 *
+	 * @param page  ページ番号
+	 * @param model モデル
+	 */
+	private void setEmployeePageToModel(int page, Model model) {
+		Page<Employee> employeePage = employeeService.getEmployeePage(page - 1, PAGE_SIZE);
+		model.addAttribute("employeeList", employeePage.getContent());
+		model.addAttribute("employeePage", employeePage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", employeePage.getTotalPages());
 	}
 }
