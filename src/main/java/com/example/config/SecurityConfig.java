@@ -17,9 +17,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authz -> authz.anyRequest().permitAll())// 全てのリクエストを許可(開発時のため)
-                .formLogin(form -> form.loginPage("/"));// ログインページの指定
-
+        http
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/", "/login", "/toInsert", "/insert", "/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/")
+                        .usernameParameter("mailAddress")
+                        .passwordParameter("password")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/employee/showList", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                )
+                .csrf(csrf -> csrf.disable());
         return http.build();
     }
 }

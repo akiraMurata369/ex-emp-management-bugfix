@@ -47,13 +47,12 @@
               action="../employee/list.html"
               th:action="@{/login}"
             >
-
               <fieldset>
                 <legend>ログイン</legend>
                 <div class="form-group">
-                  <div th:if="${errorMessage}" class="alert alert-danger">
-                    <p th:text="${errorMessage}">
-                      メールアドレスまたはパスワードが間違っています
+                  <div th:if="${param.error}" class="alert alert-danger">
+                    <p style="color: red">
+                      メールアドレスまたはパスワードが不正です。
                     </p>
                   </div>
                 </div>
