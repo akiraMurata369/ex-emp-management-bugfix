@@ -60,7 +60,7 @@ public class AdministratorController {
 	/////////////////////////////////////////////////////
 	/**
 	 * 管理者登録画面を出力します.
-	 * 
+	 *
 	 * @return 管理者登録画面
 	 */
 	@GetMapping("/toInsert")
@@ -103,14 +103,12 @@ public class AdministratorController {
 
 
 
-
-
 	/////////////////////////////////////////////////////
 	// ユースケース：ログインをする
 	/////////////////////////////////////////////////////
 	/**
 	 * ログイン画面を出力します.
-	 * 
+	 *
 	 * @return ログイン画面
 	 */
 	@GetMapping("/")
@@ -118,15 +116,19 @@ public class AdministratorController {
 		return "administrator/login";
 	}
 
+
+
+	// *******************************************
+	// Spring Securityが処理するため現状使用していない
+	// *******************************************
 	/**
 	 * ログインします.
-	 * 
+	 *
 	 * @param form 管理者情報用フォーム
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@PostMapping("/login")
 	public String login(LoginForm form, RedirectAttributes redirectAttributes) {
-		System.out.println("loginの中に入った");
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 		if (administrator == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
@@ -139,12 +141,17 @@ public class AdministratorController {
 		return "redirect:/employee/showList";
 	}
 
+
+
+	// *******************************************
+	// Spring Securityが処理するため現状使用していない
+	// *******************************************
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
 	/**
 	 * ログアウトをします. (SpringSecurityに任せるためコメントアウトしました)
-	 * 
+	 *
 	 * @return ログイン画面
 	 */
 	@GetMapping(value = "/logout")
