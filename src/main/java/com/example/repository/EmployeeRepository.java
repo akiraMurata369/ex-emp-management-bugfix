@@ -135,4 +135,28 @@ public class EmployeeRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
 		return template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 	}
+
+
+	/**
+	 * 従業員名を部分一致で検索.
+	 *
+	 * @param name 名前
+	 * @return 従業員名のリスト
+	 */
+	public List<String> findNamesByName(String name) {
+		// オートコンプリート用のSQLクエリ
+		String sql = """
+			SELECT
+			 name
+			FROM
+			employees
+			WHERE
+			name LIKE :name
+			ORDER BY name
+			;
+			""";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		return template.query(sql, param, (rs, rowNum) -> rs.getString("name"));
+	}
+
 }

@@ -89,4 +89,16 @@ public class EmployeeService {
 		List<Employee> employeeList = employeeRepository.findByName(name);
 		return employeeList;
 	}
+
+
+
+	/**
+	 * 従業員名を部分一致で検索し、指定件数まで取得する（オートコンプリート用）
+	 *
+	 * @param name  検索文字列
+	 * @return 従業員名のリスト
+	 */
+	public List<String> searchEmployeeNames(String name) {
+		return employeeRepository.findNamesByName(name);
+	}
 }
