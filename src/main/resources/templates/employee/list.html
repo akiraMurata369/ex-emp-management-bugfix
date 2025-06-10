@@ -110,24 +110,17 @@
           class="form-control me-2"
           placeholder="従業員名を入力"
           autocomplete="off"
+          list="employee-list"
         />
+
         <button type="submit" class="btn btn-primary">検索</button>
 
         <!-- オートコンプリート候補リスト -->
-        <div
-          id="autocomplete-list"
-          style="
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: white;
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
-          "
-        ></div>
+        <datalist id="employee-list">
+          <div th:each="employee : ${employeeNameList}">
+            <option th:value="${employee.name}"></option>
+          </div>
+        </datalist>
       </form>
 
       <br />
@@ -196,6 +189,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
-    <script th:src="@{/js/autocomplete.js}"></script>
+    <!-- <script th:src="@{/js/autocomplete.js}"></script> -->
   </body>
 </html>
